@@ -39,7 +39,7 @@ export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    const wordCount = post.data.content.reduce((acc, item) => {
+    const wordCount = post?.data?.content.reduce((acc, item) => {
       const sectionWordCount = RichText.asText(item.body).split(' ').length;
       return acc + sectionWordCount;
     }, 0);
