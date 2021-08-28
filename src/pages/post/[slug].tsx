@@ -39,19 +39,21 @@ export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    const wordCount = post?.data?.content.reduce((acc, item) => {
-      const sectionWordCount = RichText.asText(item.body).split(' ').length;
-      return acc + sectionWordCount;
+    const words = post?.data?.content.reduce((acc, item) => {
+      const wordsPerSection = RichText.asText(item.body).split(' ').length;
+      return acc + wordsPerSection;
     }, 0);
-    setReadingTime(Math.ceil(wordCount / 200));
+    setReadingTime(Math.ceil(words / 200));
   }, [post?.data?.content]);
 
   if (router.isFallback) return <h1>Carregando...</h1>;
   return (
     <>
-      <img src="/logo.svg" alt="logo" className={styles.log} />
+      <div className={styles.logo}>
+        <img src="/logo.svg" alt="logo" />
+      </div>
+      <img src={post.data.banner.url} alt="banner" className={styles.banner} />
       <main className={styles.container}>
-        <img src={post.data.banner.url} alt="banner" />
         <article className={styles.post}>
           <h1>{post.data.title}</h1>
           <div className={styles.info}>
@@ -69,7 +71,7 @@ export default function Post({ post }: PostProps): JSX.Element {
             </p>
           </div>
           {post.data.content.map(content => (
-            <div key={content.heading}>
+            <div key={content.heading} className={styles.content}>
               <h2> {content.heading}</h2>
               {content.body.map(body => (
                 <div key={content.heading}>{body.text}</div>
